@@ -1,7 +1,8 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 
-type Contact = {
+export type Contact = {
+  id: string;
   name: string;
   email: string;
 };
@@ -15,9 +16,9 @@ export default function handler(
   res.status(200).json(contacts);
 }
 
-const getContacts = (): Contact[] => {
+export const getContacts = (): Contact[] => {
   return [
-    { name: "John Doe", email: "john@gmail.com" },
-    { name: "Jane Doe", email: "jane@gmail.com" },
+    { id: "111", name: "John Doe", email: "john@gmail.com" },
+    { id: "222", name: "Jane Doe", email: "jane@gmail.com" },
   ];
 };

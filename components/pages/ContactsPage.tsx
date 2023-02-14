@@ -1,4 +1,5 @@
 import { Contacts, contactsSchema } from "@/utils/schemas/contactsSchema";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function ContactsPage() {
@@ -19,7 +20,9 @@ export default function ContactsPage() {
 
       <ul>
         {contacts.map((contact) => (
-          <li key={contact.email}>{contact.name}</li>
+          <li key={contact.email}>
+            <Link href={`/contacts/${contact.id}`}>{contact.name}</Link>
+          </li>
         ))}
       </ul>
     </>

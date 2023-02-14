@@ -1,10 +1,11 @@
 import zod from "zod";
 
-export const contactsSchema = zod
-  .object({
-    name: zod.string(),
-    email: zod.string().email(),
-  })
-  .array();
+export const contactSchema = zod.object({
+  id: zod.string(),
+  name: zod.string(),
+  email: zod.string().email(),
+});
+export type Contact = zod.infer<typeof contactSchema>;
 
+export const contactsSchema = contactSchema.array();
 export type Contacts = zod.infer<typeof contactsSchema>;
