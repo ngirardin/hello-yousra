@@ -1,8 +1,11 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-import { Contact, getContacts } from "../contacts";
+import { Contact, getContacts } from "../get-contacts";
+import { PrismaClient } from '@prisma/client'
 
-export default function handler(
+const prisma = new PrismaClient()
+
+export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Contact>
 ) {
@@ -12,17 +15,22 @@ export default function handler(
     throw new Error("Invalid id");
   }
 
-  const contacts = getContact(id);
+  const contact = await getContact(parseInt(id));
 
-  res.status(200).json(contacts);
+  res.status(200).json(contact);
 }
 
-const getContact = (id: string): Contact => {
-  const contact = getContacts().find((contact) => contact.id === id);
+const getContact = async (id: number): Promise<Contact> => {
+  const contact = await prisma.contact.findUnique({
+    where: {
+      id,
+    },
+  });
 
   if (!contact) {
-    throw new Error("Contact not found");
+    return getContacts()[0];
   }
-
   return contact;
 };
+
+

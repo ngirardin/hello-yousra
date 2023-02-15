@@ -1,10 +1,10 @@
-import { Contact } from "@/pages/api/contacts";
+import { Contact } from "@/pages/api/get-contacts";
 import { contactSchema } from "@/utils/schemas/contactsSchema";
 import { Formik, Form, Field } from "formik";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-function ContactsDetail() {
+export default function ContactsDetailPage() {
   const router = useRouter();
 
   const contactId = router.query.id;
@@ -28,15 +28,25 @@ function ContactsDetail() {
 
   return (
     <div>
-      Detail contact: {contact.name} - {contact.email}
+      Detail contact: {contact?.name} - {contact?.email}
       <Formik
         initialValues={{
-          name: contact.name,
-          email: contact.email,
+          name: contact?.name,
+          email: contact?.email,
         }}
         onSubmit={async (values) => {
-          await new Promise((r) => setTimeout(r, 500));
-          alert(JSON.stringify(values, null, 2));
+          const contact = {
+            name: values.name,
+            email: values.email
+          };
+          fetch('/api/create-contact', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(contact),
+          })
+          alert("Contact Saved!!");
         }}
       >
         <Form>

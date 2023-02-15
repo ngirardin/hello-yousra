@@ -6,7 +6,7 @@ export default function ContactsPage() {
   const [contacts, setContacts] = useState<Contacts>([]);
 
   useEffect(() => {
-    fetch("/api/contacts")
+    fetch("/api/get-contacts")
       .then((response) => response.json())
       .then((data) => {
         const contacts = contactsSchema.parse(data);
